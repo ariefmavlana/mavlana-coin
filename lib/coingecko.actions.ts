@@ -2,7 +2,7 @@
 
 import qs from 'query-string';
 
-const BASE_URL = process.env.COINGECKO_BASE_URL;
+const BASE_URL = 'https://api.coingecko.com/api/v3';
 const API_KEY = process.env.COINGECKO_API_KEY;
 
 if (!BASE_URL) throw new Error('Could not get base url');
@@ -23,15 +23,20 @@ export async function fetcher<T>(
 
   const response = await fetch(url, {
     headers: {
-      'x-cg-pro-api-key': API_KEY,
+      'x-cg-demo-api-key': API_KEY,
       'Content-Type': 'application/json',
     } as Record<string, string>,
     next: { revalidate },
   });
 
   if (!response.ok) {
-    const errorBody: CoinGeckoErrorBody = await response.json().catch(() => ({}));
+    if (response.status === 429) {
+      console.warn(`Rate limited by CoinGecko. URL: ${url}`);
+      // Optionally add logic to return a fallback or wait, but for now throwing a specific error
+      throw new Error('Rate Limited');
+    }
 
+    const errorBody: CoinGeckoErrorBody = await response.json().catch(() => ({}));
     throw new Error(`API Error: ${response.status}: ${errorBody.error || response.statusText} `);
   }
 

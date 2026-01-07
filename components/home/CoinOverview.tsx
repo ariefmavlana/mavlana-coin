@@ -52,14 +52,16 @@ const Categories = async () => {
     ];
 
     return (
-      <div id="categories" className="custom-scrollbar">
-        <h4>Top Categories</h4>
+      <div id="categories" className="custom-scrollbar glass-card animate-enter">
+        <h4 className="text-gradient font-bold drop-shadow-sm">Top Categories</h4>
 
         <DataTable
           columns={columns}
           data={categories?.slice(0, 10)}
           rowKey={(_, index) => index}
           tableClassName="mt-3"
+          headerCellClassName="text-purple-100/80 font-medium"
+          bodyCellClassName="border-b border-white/5 hover:bg-white/5 transition-colors duration-200"
         />
       </div>
     );
