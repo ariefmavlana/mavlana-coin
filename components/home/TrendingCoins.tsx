@@ -18,6 +18,11 @@ const TrendingCoins = async () => {
 
   const columns: DataTableColumn<TrendingCoin>[] = [
     {
+      header: 'Rank',
+      cellClassName: 'rank-cell w-16',
+      cell: (coin) => <span className="pl-4">{coin.item.market_cap_rank}</span>,
+    },
+    {
       header: 'Name',
       cellClassName: 'name-cell',
       cell: (coin) => {
